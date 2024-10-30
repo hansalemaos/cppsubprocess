@@ -39,12 +39,63 @@ https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-process
 
 https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa
 
-### Usage example 
+### Usage example 1
+```cpp
+#include "shellprocessmanager.hpp"
+#include <algorithm>
+#include <vector>
+//compile: zig c++ -std=c++2a -O3 -g0 subprocess.cpp
+
+auto replace_rn(std::string str) {
+	const std::string str2 = "\r\n";
+	std::size_t found = str.find(str2);
+	if (found != std::string::npos)
+		str[found] = ' ';
+	return str;
+}
+int main() {
+	std::string myshell = "C:\\Windows\\System32\\cmd.exe";
+	ShellProcessManager ph(myshell);
+	if (!ph.Initialize()) {
+		std::cerr << "Failed to initialize the process." << std::endl;
+		return -1;
+	}
+
+	int counter = 0;
+	ph.StartReadingThreads();
+	std::vector<std::string> command_vector = { "dir", "ls -l","ls -l this goes to stderr","ping 1.1.1.1","ipconfig","whoami","grep also to stderr"};
+	for (auto& cmd : command_vector) {
+		std::cout << "Executing soon: " << cmd << std::endl;
+		ph.stdinWrite(cmd);
+		std::cout << "Sending command: " << cmd << std::endl;
+		std::cout << "Sleeping a bit: " << cmd << std::endl;
+		Sleep(1000);
+		auto stdout_output = ph.readStdOut(); // won't deadlock
+		for (const auto& out : stdout_output) {
+			// do cool stuff here
+			std::string tmpstring = replace_rn(out.second); // getting rid of \r\n
+			std::cout << "STDOUT: " << tmpstring;
+		}
+		std::cout << std::endl;
+		auto stderr_output = ph.readStdErr(); // won't deadlock
+		for (const auto& out : stderr_output) {
+			if (is_whitespace(out.second))  continue; 
+			// do cool stuff here
+			std::string tmpstring = replace_rn(out.second); // getting rid of \r\n
+			std::cout << "STDERR: " << tmpstring;
+		}
+	}
+	// When the process exits, the pipes are closed and the threads are stopped.
+	return 0;
+}
+
+```
+
+### Usage example 2
 
 ```cpp
 #include "shellprocessmanager.hpp"
 #include <algorithm>
-//#include "folly"
 //compile: zig c++ -std=c++2a -O3 -g0 subprocess.cpp
 bool is_whitespace(const std::string& s) {
 	return std::all_of(s.begin(), s.end(), isspace);
@@ -74,7 +125,7 @@ int main() {
 
 		auto stdout_output = ph.readStdOut();
 		for (const auto& out : stdout_output) {
-			std::string tmpstring = replace_rn(out.second);
+			std::string tmpstring = replace_rn(out.second); // getting rid of \r\n
 			// do some automation/filtering or whatever you want here
 			//if (is_whitespace(tmpstring)) continue; 
 			//if (tmpstring.size() < 3) continue;
