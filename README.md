@@ -4,8 +4,8 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
 
 ### Example output - running *dir / ls -l* every second and capturing the output
 
-[![YT](https://i.ytimg.com/vi/lAtMUOHMyA/maxresdefault.jpg)](https://www.youtube.com/watch?v=lAtMUOHMyA)
-[https://www.youtube.com/watch?v=lAtMUOHMyA]()
+[![YT](https://i.ytimg.com/vi/-lAtMUOHMyA/maxresdefault.jpg)](https://www.youtube.com/watch?v=-lAtMUOHMyA)
+[https://www.youtube.com/watch?v=-lAtMUOHMyA]()
 
 ## The Windows version
 
