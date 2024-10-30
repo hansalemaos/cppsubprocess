@@ -10,15 +10,16 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
  * uses only the standard library
  * for Linux and Windows
  * installation: copy and paste the code into your project
- * no cmake required
+ * no CMake required
  * very stable
- * launch the shell only once, and keep using it, no need to use one popen call each command
+ * launch the shell only once, and keep using it, no need to use one popen call for each command
  * no limitation on the number of commands you can execute through stdin
  * cmd.exe or shell exclusive commands are supported (dir, cd, etc.)
  * very simple API (starting, writing to stdin, reading for stdout,stderr - that's it)
  * Optional CreateProcess parameters for Windows
  * Automatic cleanup
  * Launch it with any shell you want
+ * Tested with g++, zig, msvc and clang
 
 
 ### Disadvantages
