@@ -2,6 +2,11 @@
 
 Two classes for Windows and Linux that facilitate launching and controlling shells like powershell.exe, adb.exe and cmd.exe, sh, bash, etc. The shells are running constantly in the background, always ready to receive and execute commands. Communicating with them (writing to stdin, reading from stdout and stderr separately) happens without deadlocking.
 
+### Example output - running **dir / ls -l** every second and capturing the output
+
+[![YT](https://i.ytimg.com/vi/lAtMUOHMyA/maxresdefault.jpg)](https://www.youtube.com/watch?v=lAtMUOHMyA)
+[https://www.youtube.com/watch?v=lAtMUOHMyA]()
+
 ## The Windows version
 
 ```cpp
