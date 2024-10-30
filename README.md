@@ -2,7 +2,7 @@
 
 Two classes for Windows and Linux that facilitate launching and controlling shells like powershell.exe, adb.exe and cmd.exe, sh, bash, etc. The shells are running constantly in the background, always ready to receive and execute commands. Communicating with them (writing to stdin, reading from stdout and stderr separately) happens without deadlocking.
 
- Advantages
+ ### Advantages
  * no deadlocks ever
  * all output from stderr / stdout is captured separately
  * read chunks are enumerated and returned in order even during the execution of a process
@@ -21,7 +21,7 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
  * Launch it with any shell you want
 
 
- Disadvantages
+### Disadvantages
  * Poor error handling, I need to improve that,
    However, it is less important than it is for other libraries,
    because the ideia is launching the shell only once
