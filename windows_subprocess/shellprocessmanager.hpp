@@ -146,10 +146,12 @@ std::wstring ShellProcessManager::ReadFromPipe(HANDLE pipeHandle) {
 
 void ShellProcessManager::ReadFromStdOut() {
 	int myco = 0;
+	std::wstring m;
 	while (continue_reading_stdout) {
-		std::wstring m = ReadFromPipe(g_hChildStd_OUT_Rd);
+		m.append(ReadFromPipe(g_hChildStd_OUT_Rd));
 		if (continue_reading_stdout) {
 			strmap_out.emplace(myco++, ws2s(m));
+			m.clear();
 		}
 		else { break; }
 	}
@@ -157,10 +159,12 @@ void ShellProcessManager::ReadFromStdOut() {
 
 void ShellProcessManager::ReadFromStdErr() {
 	int myco = 0;
+	std::wstring m;
 	while (continue_reading_stderr) {
-		std::wstring m = ReadFromPipe(g_hChildStd_ERR_Rd);
+		m.append( ReadFromPipe(g_hChildStd_ERR_Rd));
 		if (continue_reading_stderr) {
 			strmap_err.emplace(myco++, ws2s(m));
+			m.clear();
 		}
 		else { break; }
 	}
@@ -198,21 +202,27 @@ void ShellProcessManager::StopReadingThreads() {
 
 std::map<int, std::string> ShellProcessManager::readStdOut() {
 	std::map<int, std::string> v;
-	for (auto& it : strmap_out) {
-		v[it.first] = it.second;
+	while (strmap_out.begin() != strmap_out.end()) {
+		int tempint = strmap_out.begin()->first;
+		std::string tmpstring = strmap_out.begin()->second;
+		v[tempint] = tmpstring;
+		strmap_out.erase(strmap_out.begin());
+
 	}
-	strmap_out.clear();
+	return v;
+}
+std::map<int, std::string> ShellProcessManager::readStdErr() {
+	std::map<int, std::string> v;
+	while (strmap_err.begin() != strmap_err.end()) {
+		int tempint = strmap_err.begin()->first;
+		std::string tmpstring = strmap_err.begin()->second;
+		v[tempint] = tmpstring;
+		strmap_err.erase(strmap_err.begin());
+
+	}
 	return v;
 }
 
-std::map<int, std::string> ShellProcessManager::readStdErr() {
-	std::map<int, std::string> v;
-	for (auto& it : strmap_err) {
-		v[it.first] = it.second;
-	}
-	strmap_err.clear();
-	return v;
-}
 
 void ShellProcessManager::CloseHandles() {
 	CloseHandle(g_hChildStd_OUT_Rd);
