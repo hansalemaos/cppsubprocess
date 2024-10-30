@@ -88,6 +88,8 @@ int main() {
 			std::cout << out.first << " : " << out.second << std::endl;
 		}
 	}
+	// When the process exits, the pipes are closed and the threads are stopped.
+
 	return 0;
 }
 
