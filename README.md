@@ -30,7 +30,7 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
    gives you everything you need from the OS.
    Once the shell is running, chances of having an error are very very low,
    because there are no more pipes to create, no more file descriptors
-   to open / close,  and no more threads to start.
+   to open / close,  and no more threads to start. It never crashed on my PC.
 
 
 ### Example output - running *dir / ls -l* every second and capturing the output
