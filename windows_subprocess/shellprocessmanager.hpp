@@ -11,6 +11,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+std::string ws2s(const std::wstring& str) {
+	int size_needed = WideCharToMultiByte(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0, NULL, NULL);
+	std::string strTo(size_needed, 0);
+	WideCharToMultiByte(CP_UTF8, 0, &str[0], (int)str.size(), &strTo[0], size_needed, NULL, NULL);
+	return strTo;
+}
+
+std::wstring s2ws(const std::string& str) {
+	int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
+	std::wstring wstrTo(size_needed, 0);
+	MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &wstrTo[0], size_needed);
+	return wstrTo;
+}
+
 class ShellProcessManager {
 public:
 	ShellProcessManager(std::string shellCommand = "cmd.exe", DWORD creationFlags = CREATE_NO_WINDOW, WORD wShowWindow = SW_NORMAL, LPSTR lpReserved = nullptr, LPSTR lpDesktop = nullptr, LPSTR lpTitle = nullptr, DWORD dwX = 0, DWORD dwY = 0, DWORD dwXSize = 0, DWORD dwYSize = 0, DWORD dwXCountChars = 0, DWORD dwYCountChars = 0, DWORD dwFillAttribute = 0, DWORD dwFlags = 0, WORD cbReserved2 = 0, LPBYTE lpReserved2 = nullptr) :
@@ -18,10 +32,31 @@ public:
 		continue_reading_stderr(true),
 		siStartInfo{}
 	{
+		TCHAR lpReservedarray[4096] = { 0 };
+		if (lpReserved != nullptr) {
+			std::string lpReservedwstring(lpReserved);
+			for (int i = 0; i < lpReservedwstring.size(); i++) {
+				lpReservedarray[i] = lpReservedwstring.c_str()[i];
+			}
+		}
+		TCHAR lpDesktoparray[4096] = { 0 };
+		if (lpDesktop != nullptr) {
+			std::string lpDesktopwstring(lpDesktop);
+			for (int i = 0; i < lpDesktopwstring.size(); i++) {
+				lpDesktoparray[i] = lpDesktopwstring.c_str()[i];
+			}
+		}
+		TCHAR lpTitlearray[4096] = { 0 };
+		if (lpTitle != nullptr) {
+			std::string lpTitlewstring(lpTitle);
+			for (int i = 0; i < lpTitlewstring.size(); i++) {
+				lpTitlearray[i] = lpTitlewstring.c_str()[i];
+			}
+		}
 		ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
-		siStartInfo.lpReserved = lpReserved;
-		siStartInfo.lpDesktop = lpDesktop;
-		siStartInfo.lpTitle = lpTitle;
+		siStartInfo.lpReserved = lpReservedarray;
+		siStartInfo.lpDesktop = lpDesktoparray;
+		siStartInfo.lpTitle = lpTitlearray;
 		siStartInfo.dwX = dwX;
 		siStartInfo.dwY = dwY;
 		siStartInfo.dwXSize = dwXSize;
@@ -67,27 +102,15 @@ private:
 	std::thread t1;
 	std::thread t2;
 
-	static std::string ws2s(const std::wstring& str);
-	static std::wstring s2ws(const std::string& str);
+	//static std::string ws2s(const std::wstring& str);
+	//static std::wstring s2ws(const std::string& str);
 	std::wstring ReadFromPipe(HANDLE pipeHandle);
 	void ReadFromStdOut();
 	void ReadFromStdErr();
 	void CloseHandles();
 };
 
-std::string ShellProcessManager::ws2s(const std::wstring& str) {
-	int size_needed = WideCharToMultiByte(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0, NULL, NULL);
-	std::string strTo(size_needed, 0);
-	WideCharToMultiByte(CP_UTF8, 0, &str[0], (int)str.size(), &strTo[0], size_needed, NULL, NULL);
-	return strTo;
-}
 
-std::wstring ShellProcessManager::s2ws(const std::string& str) {
-	int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
-	std::wstring wstrTo(size_needed, 0);
-	MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &wstrTo[0], size_needed);
-	return wstrTo;
-}
 
 bool ShellProcessManager::Initialize() {
 	SECURITY_ATTRIBUTES saAttr;
