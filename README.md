@@ -60,8 +60,7 @@ int main() {
 	int counter = 0;
 	ph.StartReadingThreads();
 
-	while (counter < 4000) {
-		counter++;
+	while (counter++ < 4000) {
 		ph.stdinWrite("dir");
 		Sleep(1000); //1 s
 
@@ -114,11 +113,9 @@ int main() {
     try {
         ShellProcessManager shellManager("/bin/sh");
         int counter = 0;
-        while (counter < 200000) {
-            counter++;
+        while (counter++ < 200000) {
             shellManager.stdinWrite("ls -l");
             usleep(1000 * 1000); // 1 second
-
             auto stdoutmap = shellManager.readStdOut();
             for (auto& it : stdoutmap) {
                 // do something here
