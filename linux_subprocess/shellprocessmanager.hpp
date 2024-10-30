@@ -119,11 +119,11 @@ private:
         if (strmap.empty()) {
             return v;
         }
-        while (!strmap.empty()) {
+        while (strmap.begin()!=strmap.end()) {
             int it = strmap.begin()->first;
             std::string it2 = strmap.begin()->second;
             v[it] = it2;
-            strmap.erase(it);
+            strmap.erase(strmap.begin());
         }
         return v;
     }

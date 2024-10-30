@@ -201,6 +201,9 @@ void ShellProcessManager::StopReadingThreads() {
 
 std::map<int, std::string> ShellProcessManager::readStdOut() {
 	std::map<int, std::string> v;
+	if (strmap_out.empty()) {
+		return v;
+	}
 	while (strmap_out.begin() != strmap_out.end()) {
 		int tempint = strmap_out.begin()->first;
 		std::string tmpstring = strmap_out.begin()->second;
@@ -212,6 +215,9 @@ std::map<int, std::string> ShellProcessManager::readStdOut() {
 }
 std::map<int, std::string> ShellProcessManager::readStdErr() {
 	std::map<int, std::string> v;
+	if (strmap_err.empty()) {
+		return v;
+	}
 	while (strmap_err.begin() != strmap_err.end()) {
 		int tempint = strmap_err.begin()->first;
 		std::string tmpstring = strmap_err.begin()->second;

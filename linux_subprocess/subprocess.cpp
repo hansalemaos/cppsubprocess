@@ -7,7 +7,8 @@ int main() {
         while (counter < 200000) {
             counter++;
             shellManager.stdinWrite("ls -l");
-            usleep(1000 * 1000); // 1 second
+           // usleep(1000 * 1000); // 1 second
+            usleep(1000 * 100); 
 
             auto stdoutmap = shellManager.readStdOut();
             for (auto& it : stdoutmap) {

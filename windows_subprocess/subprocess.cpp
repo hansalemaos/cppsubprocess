@@ -19,7 +19,8 @@ int main() {
 	while (counter < 4000) {
 		counter++;
 		ph.stdinWrite("dir");
-		Sleep(1000); //1 s
+		//Sleep(1000); //1 s
+		Sleep(100);
 
 		auto stdout_output = ph.readStdOut();
 		for (const auto& out : stdout_output) {
