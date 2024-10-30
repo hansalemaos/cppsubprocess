@@ -16,7 +16,7 @@ int main() {
 	int counter = 0;
 	ph.StartReadingThreads();
 
-	while (counter < 4000) {
+	while (counter < 400000) {
 		counter++;
 		ph.stdinWrite("dir");
 		//Sleep(1000); //1 s
