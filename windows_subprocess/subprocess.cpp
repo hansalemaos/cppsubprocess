@@ -24,11 +24,12 @@ int main() {
 
 		auto stdout_output = ph.readStdOut();
 		for (const auto& out : stdout_output) {
-			std::string tmpstring = out.second;
+			//std::string tmpstring = out.second;
 			//if (is_whitespace(tmpstring)) continue; // do some automation stuff here
 			//if (tmpstring.size() < 3) continue;
 			//tmpstring.replace(tmpstring.size()-2,tmpstring.size()-1,1,'\n');
-			std::cout << tmpstring;
+			std::cout << out.first << " : " << out.second;
+
 		}
 		std::cout << std::endl;
 		auto stderr_output = ph.readStdErr();
