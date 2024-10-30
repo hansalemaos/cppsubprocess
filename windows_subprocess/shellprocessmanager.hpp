@@ -131,7 +131,6 @@ bool ShellProcessManager::Initialize() {
 
 void ShellProcessManager::stdinWrite(std::string str) {
 	DWORD dwWritten;
-	//std::string s = ws2s(str);
 	str.append("\n");
 	WriteFile(g_hChildStd_IN_Wr, str.c_str(), str.size(), &dwWritten, NULL);
 
