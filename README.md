@@ -6,7 +6,7 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
  * no deadlocks ever
  * all output from stderr / stdout is captured separately
  * read chunks are enumerated and returned in order even during the execution of a process
- * has only one dependency https://github.com/greg7mdp/parallel-hashmap - (included)
+ * has only one dependency https://github.com/greg7mdp/parallel-hashmap - (to guarantee stable key-value pointers - included)
  * uses only the standard library
  * for Linux and Windows
  * installation: copy and paste the code into your project
