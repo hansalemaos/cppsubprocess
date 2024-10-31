@@ -25,7 +25,7 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
 
 
 ### Disadvantages
- * Poor error handling, I will improve that soon (help welcome),
+ * Limited error handling, I will improve that soon (help welcome),
    However, it is less important than it is for other libraries,
    because the ideia is launching the shell only once
    and keeping it forever alive
