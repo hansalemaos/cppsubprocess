@@ -17,7 +17,7 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
  * no limitation on the number of commands you can execute through 
    stdin (Most subprocess/popen code (e.g., Python) permit only one input command, and calls then communicate(), and the party is over)
  * cmd.exe or shell exclusive commands are supported (dir, cd, etc.)
- * very simple API (starting, writing to stdin, reading for stdout,stderr - that's it)
+ * very simple API (starting, writing to stdin, reading from stdout,stderr - that's it)
  * Optional CreateProcess parameters for Windows
  * Automatic cleanup
  * Launch it with any shell you want (bash, sh, adb, cmd.exe, powershell, etc.)
