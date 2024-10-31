@@ -10,7 +10,7 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
  * has only one dependency https://github.com/greg7mdp/parallel-hashmap - (to guarantee stable key-value pointers - included)
  * uses only the standard library
  * for Linux and Windows
- * installation: copy and paste the code into your project
+ * installation: copy and paste the code into your project and import it (examples below)
  * no CMake required
  * very stable
  * launch the shell only once, and keep using it, no need to use one popen call for each command
