@@ -5,7 +5,8 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
  ### Advantages
  * no deadlocks ever
  * all output from stderr / stdout is captured separately
- * read chunks are enumerated and returned in order even during the execution of a process
+ * read chunks are enumerated and returned in order 
+ * Live capture - get the output even when the process is still executing
  * has only one dependency https://github.com/greg7mdp/parallel-hashmap - (to guarantee stable key-value pointers - included)
  * uses only the standard library
  * for Linux and Windows
@@ -18,8 +19,9 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
  * very simple API (starting, writing to stdin, reading for stdout,stderr - that's it)
  * Optional CreateProcess parameters for Windows
  * Automatic cleanup
- * Launch it with any shell you want
+ * Launch it with any shell you want (bash, sh, adb, cmd.exe, powershell, etc.)
  * Tested with g++, zig, msvc and clang
+ * No "double escaping" needed, due to the direct interaction with the shell
 
 
 ### Disadvantages
