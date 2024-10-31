@@ -14,7 +14,8 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
  * no CMake required
  * very stable
  * launch the shell only once, and keep using it, no need to use one popen call for each command
- * no limitation on the number of commands you can execute through stdin
+ * no limitation on the number of commands you can execute through 
+   stdin (usually it's one cmd only, and then calling communicate() - like in Python)
  * cmd.exe or shell exclusive commands are supported (dir, cd, etc.)
  * very simple API (starting, writing to stdin, reading for stdout,stderr - that's it)
  * Optional CreateProcess parameters for Windows
