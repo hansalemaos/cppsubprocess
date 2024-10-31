@@ -4,7 +4,7 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
 
  ### Advantages
  * no deadlocks ever
- * all output from stderr / stdout is captured separately
+ * all output from stderr / stdout is captured separately, not a single byte escapes
  * read chunks are enumerated and returned in order 
  * Live capture - get the output even when the process is still executing
  * has only one dependency https://github.com/greg7mdp/parallel-hashmap - (to guarantee stable key-value pointers - included)
