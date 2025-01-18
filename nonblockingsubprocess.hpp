@@ -7,6 +7,7 @@
 #include <istream>
 #include <mutex>
 #include <ostream>
+#include <stdio.h>
 #include <string>
 #include <thread>
 #include <vector>
@@ -16,13 +17,54 @@
 #else
 #include <fcntl.h>
 #include <pthread.h>
-#include <stdio.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <sys/epoll.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #endif
+
+static const char *On_IRed{"\033[0;101m"}; // Red
+static const char *Color_Off{"\033[0m"};   // Text Reset
+static const char *IYellow{"\033[0;93m"};  // Yellow
+
+static bool isspace_or_empty(std::string &str)
+{
+    if (str.size() == 0)
+    {
+        return true;
+    }
+    for (size_t i{}; i < str.size(); i++)
+    {
+        if (!::isspace(str[i]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+static void print_red(std::string &msg)
+{
+    if (isspace_or_empty(msg))
+    {
+        return;
+    }
+    puts(On_IRed);
+    puts(msg.c_str());
+    puts(Color_Off);
+}
+static void print_yellow(std::string &msg)
+{
+    if (isspace_or_empty(msg))
+    {
+        return;
+    }
+    fputs(IYellow, stderr);
+    fputs(msg.c_str(), stderr);
+    fputs(Color_Off, stderr);
+}
 
 void sleepcp(int milliseconds);
 
@@ -56,10 +98,12 @@ class ShellProcessManager
 {
   public:
     ShellProcessManager(std::string shell_command, size_t buffer_size = 4096, size_t stdout_max_len = 4096,
-                        size_t stderr_max_len = 4096, std::string exit_command = "exit")
+                        size_t stderr_max_len = 4096, std::string exit_command = "exit", int print_stdout = 1,
+                        int print_stderr = 1)
         : shell_command(shell_command), buffer_size(buffer_size), stdout_max_len(stdout_max_len),
           stderr_max_len(stderr_max_len), exit_command(exit_command), continue_reading_stdout(true),
-          continue_reading_stderr(true), siStartInfo{}
+          continue_reading_stderr(true), siStartInfo{}, print_stdout((bool)print_stdout),
+          print_stderr((bool)print_stderr)
     {
     }
     ~ShellProcessManager()
@@ -88,6 +132,8 @@ class ShellProcessManager
     size_t stdout_max_len;
     size_t stderr_max_len;
     std::string exit_command;
+    bool print_stdout;
+    bool print_stderr;
 
   private:
     void create_startup_info(DWORD creationFlags = 0x08000000, WORD wShowWindow = 1, LPSTR lpReserved = nullptr,
@@ -221,6 +267,10 @@ class ShellProcessManager
             if (continue_reading_stdout)
             {
                 strmap_out.emplace_back(ws2s(m));
+                if (print_stdout)
+                {
+                    print_yellow(strmap_out.back());
+                }
                 m.clear();
                 if (strmap_out.size() >= stdout_max_len)
                 {
@@ -243,6 +293,10 @@ class ShellProcessManager
             {
                 strmap_err.emplace_back(ws2s(m));
                 m.clear();
+                if (print_stderr)
+                {
+                    print_red(strmap_err.back());
+                }
                 if (strmap_err.size() >= stderr_max_len)
                 {
                     strmap_err.erase(strmap_err.begin());
@@ -362,10 +416,11 @@ class ShellProcessManager
 {
   public:
     ShellProcessManager(std::string shell_command, size_t buffer_size = 4096, size_t stdout_max_len = 4096,
-                        size_t stderr_max_len = 4096, std::string exit_command = "exit")
+                        size_t stderr_max_len = 4096, std::string exit_command = "exit", int print_stdout = 1,
+                        int print_stderr = 1)
         : shell_command(shell_command), continue_reading_stdout(true), continue_reading_stderr(true),
           buffer_size(buffer_size), stdout_max_len(stdout_max_len), stderr_max_len(stderr_max_len),
-          exit_command(exit_command)
+          exit_command(exit_command), print_stdout((bool)print_stdout), print_stderr((bool)print_stderr)
     {
     }
 
@@ -462,6 +517,8 @@ class ShellProcessManager
     size_t stderr_max_len;
     std::string exit_command;
     std::mutex my_mutex_lock;
+    bool print_stdout;
+    bool print_stderr;
 
     void child_process()
     {
@@ -502,6 +559,10 @@ class ShellProcessManager
             if (!continue_reading_stdout)
                 break;
             strmap_out.emplace_back(std::string{buff.begin(), buff.begin() + iret});
+            if (print_stdout)
+            {
+                print_yellow(strmap_out.back());
+            }
             if (strmap_out.size() >= stdout_max_len)
             {
                 strmap_out.erase(strmap_out.begin());
@@ -522,6 +583,10 @@ class ShellProcessManager
             if (!continue_reading_stderr)
                 break;
             strmap_err.emplace_back(std::string{bufferr.begin(), bufferr.begin() + iret});
+            if (print_stderr)
+            {
+                print_red(strmap_err.back());
+            }
             if (strmap_err.size() >= stderr_max_len)
             {
                 strmap_err.erase(strmap_err.begin());

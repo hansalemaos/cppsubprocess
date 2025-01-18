@@ -36,7 +36,8 @@ int main(int argc, char *argv[])
 #else
         std::string shellcmd = "/bin/bash";
 #endif
-        ShellProcessManager proc{shellcmd, 4096, 4096, 4096, "exit"};
+        // arguments: std::string shell_command, size_t buffer_size = 4096, size_t stdout_max_len = 4096, size_t stderr_max_len = 4096, std::string exit_command = "exit", int print_stdout = 1, int print_stderr = 1
+        ShellProcessManager proc{shellcmd, 4096, 4096, 4096, "exit", 1, 1};
         bool resultproc = proc.start_shell(); //optional arguments for Windows: DWORD creationFlag = 0, DWORD creationFlags = CREATE_NO_WINDOW, WORD wShowWindow = SW_NORMAL, LPSTR lpReserved = nullptr, LPSTR lpDesktop = nullptr, LPSTR lpTitle = nullptr, DWORD dwX = 0, DWORD dwY = 0, DWORD dwXSize = 0, DWORD dwYSize = 0, DWORD dwXCountChars = 0, DWORD dwYCountChars = 0, DWORD dwFillAttribute = 0, DWORD dwFlags = 0, WORD cbReserved2 = 0, LPBYTE lpReserved2 = nullptr
         std::cout << "resultproc: " << resultproc << std::endl;
         proc.stdin_write("ls -l");
