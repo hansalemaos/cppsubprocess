@@ -24,7 +24,7 @@ Two classes for Windows and Linux that facilitate launching and controlling shel
  * No "double escaping" needed, due to the direct interaction with the shell
 
 
-```sh
+```cpp
 #include "nonblockingsubprocess.hpp"
 
 int main(int argc, char *argv[])
@@ -44,12 +44,12 @@ int main(int argc, char *argv[])
         proc.stdin_write("ls -l");
         sleepcp(100);
         auto val = proc.get_stdout();
-        std::cout << "v1111111111: " << val << std::endl;
+        std::cout << "stdout: " << val << std::endl;
         sleepcp(100);
         proc.stdin_write("ls -l");
         sleepcp(100);
         auto val2 = proc.get_stdout();
-        std::cout << "v2222222222: " << val << std::endl;
+        std::cout << "stderr: " << val << std::endl;
         proc.stop_shell(); // optional: automatically called by the destructor
         sleepcp(1000);
     }
