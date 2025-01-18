@@ -38,8 +38,7 @@ int main(int argc, char *argv[])
 #endif
         ShellProcessManager proc{shellcmd, 4096, 4096, 4096, "exit"};
         // proc.create_startup_info();
-        bool resultproc = proc.start_shell(); //optional arguments for Windows: DWORD creationFlag = 0, DWORD creationFlags = CREATE_NO_WINDOW, WORD wShowWindow = SW_NORMAL, LPSTR lpReserved = nullptr, LPSTR lpDesktop = nullptr, LPSTR lpTitle = nullptr, DWORD dwX = 0, DWORD dwY = 0, DWORD dwXSize = 0, DWORD dwYSize = 0, DWORD dwXCountChars = 0, DWORD dwYCountChars = 0, DWORD dwFillAttribute = 0, DWORD dwFlags = 0, WORD cbReserved2 = 0,
-                     LPBYTE lpReserved2 = nullptr
+        bool resultproc = proc.start_shell(); //optional arguments for Windows: DWORD creationFlag = 0, DWORD creationFlags = CREATE_NO_WINDOW, WORD wShowWindow = SW_NORMAL, LPSTR lpReserved = nullptr, LPSTR lpDesktop = nullptr, LPSTR lpTitle = nullptr, DWORD dwX = 0, DWORD dwY = 0, DWORD dwXSize = 0, DWORD dwYSize = 0, DWORD dwXCountChars = 0, DWORD dwYCountChars = 0, DWORD dwFillAttribute = 0, DWORD dwFlags = 0, WORD cbReserved2 = 0, LPBYTE lpReserved2 = nullptr
         std::cout << "resultproc: " << resultproc << std::endl;
         proc.stdin_write("ls -l");
         sleepcp(100);
