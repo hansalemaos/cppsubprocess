@@ -552,7 +552,6 @@ class ShellProcessManager
     {
         std::vector<char> buff;
         buff.resize(buffer_size);
-        int myco = 0;
         while (continue_reading_stdout)
         {
             int iret = read(FDChildStdout, buff.data(), buffer_size);
@@ -576,7 +575,6 @@ class ShellProcessManager
     {
         std::vector<char> bufferr;
         bufferr.resize(buffer_size);
-        int myco = 0;
         while (continue_reading_stderr)
         {
             int iret = read(FDChildStderr, bufferr.data(), buffer_size);
